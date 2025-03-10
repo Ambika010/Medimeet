@@ -10,11 +10,11 @@ const AppContextProvider = (props) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
     const [doctors, setDoctors] = useState([])
-    const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
+    const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : false)
     const [userData, setUserData] = useState(false)
 
     // Getting Doctors using API
-    const getDoctosData = async () => {
+    const getDoctorsData = async () => {
 
         try {
 
@@ -52,18 +52,20 @@ const AppContextProvider = (props) => {
 
     }
 
-    useEffect(() => {
-        getDoctosData()
+    useEffect(() => { 
+        getDoctorsData()
     }, [])
 
     useEffect(() => {
         if (token) {
             loadUserProfileData()
+        } else {
+            setUserData(false)
         }
     }, [token])
 
     const value = {
-        doctors, getDoctosData,
+        doctors, getDoctorsData,
         currencySymbol,
         backendUrl,
         token, setToken,
